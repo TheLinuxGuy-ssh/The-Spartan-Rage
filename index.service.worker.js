@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1772690990|3186466690';
+const CACHE_VERSION = '1772693123|1339505414';
 /** @type {string} */
 const CACHE_PREFIX = 'God of War:Decon-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
