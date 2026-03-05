@@ -1,4 +1,4 @@
-# ⚔️ The Spartan Rage
+![logo](https://github.com/user-attachments/assets/874e071a-95ec-4544-acda-908c1d409484)
 
 A brutal 2D action-adventure game inspired by the legendary **God of War–style** combat experience.  
 **The Spartan Rage** delivers fast-paced hack-and-slash combat, cinematic boss fights, and a mythological revenge-driven storyline — all in a side-scrolling 2D world.
