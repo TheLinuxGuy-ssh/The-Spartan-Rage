@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bti4jqhaj2asa"]
+
+[ext_resource type="Texture2D" uid="uid://b2ce2vluhi2db" path="res://assets/anim/light/light-01.png" id="1_ulqcf"]
+[ext_resource type="Texture2D" uid="uid://ci7trl0w7spyg" path="res://assets/anim/light/light-02.png" id="2_orvb3"]
+[ext_resource type="Texture2D" uid="uid://bhgfmowtsywki" path="res://assets/anim/light/light-03.png" id="3_weos1"]
+[ext_resource type="Texture2D" uid="uid://ceotco8lm0kha" path="res://assets/anim/light/light-04.png" id="4_ie0tw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bd8tm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ulqcf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_orvb3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_weos1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ie0tw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
+[node name="light" type="Node2D" unique_id=847973079]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1919006960]
+sprite_frames = SubResource("SpriteFrames_bd8tm")
+frame_progress = 0.4592642
