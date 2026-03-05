@@ -278,7 +278,7 @@ animations = [{
 [node name="Kratos" type="CharacterBody2D" unique_id=2037797580]
 position = Vector2(5, 1)
 
-[node name="Basic" type="AnimatedSprite2D" parent="." unique_id=354395380]
+[node name="BasicAnim" type="AnimatedSprite2D" parent="." unique_id=354395380]
 position = Vector2(20.878414, 0.12159252)
 scale = Vector2(0.30173695, 0.30173698)
 sprite_frames = SubResource("SpriteFrames_vmmqh")

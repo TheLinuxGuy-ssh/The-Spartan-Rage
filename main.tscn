@@ -6005,62 +6005,6 @@ animations = [{
 "speed": 2.0
 }]
 
-[sub_resource type="GDScript" id="GDScript_h2yge"]
-script/source = "extends CharacterBody2D
-
-
-var SPEED  = 150.0
-const JUMP_VELOCITY = -400.0
-
-
-func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-
-	# Handle jump.
-	if Input.is_action_just_pressed(\"move_up\") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-	if Input.is_action_pressed(\"attack\") and is_on_floor():
-		$Basic.visible = false
-		$AttackAnim.visible = true
-		$AttackAnim.play()
-		SPEED = 20.0
-		await get_tree().create_timer(2.4).timeout
-		$Basic.visible = true
-		$AttackAnim.visible = false
-		SPEED = 150.0
-	if Input.is_action_pressed(\"interact\") and is_on_floor():
-		$Basic.visible = false
-		$BoxOpen.visible = true
-		$BoxOpen.play()
-		SPEED = 0.0
-		await get_tree().create_timer(1.6).timeout
-		$Basic.visible = true
-		$BoxOpen.visible = false
-		SPEED = 150.0
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis(\"move_left\", \"move_right\")
-	if direction:
-		if direction < 0:
-			$Basic.flip_h = true
-			$AttackAnim.flip_h = true
-			$BoxOpen.flip_h = true
-		elif direction > 0:
-			$Basic.flip_h = false
-			$AttackAnim.flip_h = false
-			$BoxOpen.flip_h = false
-		$Basic.play(\"Run\")
-		velocity.x = direction * SPEED
-	else:
-		$Basic.play(\"Idle\")
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-
-	move_and_slide()
-"
-
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7mycd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
@@ -6080,9 +6024,65 @@ animations = [{
 "speed": 1.0
 }]
 
-[node name="Main" type="Node2D" unique_id=1869871724]
+[sub_resource type="GDScript" id="GDScript_h2yge"]
+script/source = "extends CharacterBody2D
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=2042095853]
+
+var SPEED  = 150.0
+const JUMP_VELOCITY = -400.0
+
+
+func _physics_process(delta: float) -> void:
+	# Add the gravity.
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+	# Handle jump.
+	if Input.is_action_just_pressed(\"move_up\") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+	if Input.is_action_pressed(\"attack\") and is_on_floor():
+		$BasicAnim.visible = false
+		$AttackAnim.visible = true
+		$AttackAnim.play()
+		SPEED = 20.0
+		await get_tree().create_timer(2.4).timeout
+		$BasicAnim.visible = true
+		$AttackAnim.visible = false
+		SPEED = 150.0
+	if Input.is_action_pressed(\"interact\") and is_on_floor():
+		$BasicAnim.visible = false
+		$BoxOpen.visible = true
+		$BoxOpen.play()
+		SPEED = 0.0
+		await get_tree().create_timer(1.6).timeout
+		$BasicAnim.visible = true
+		$BoxOpen.visible = false
+		SPEED = 150.0
+
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var direction := Input.get_axis(\"move_left\", \"move_right\")
+	if direction:
+		if direction < 0:
+			$BasicAnim.flip_h = true
+			$AttackAnim.flip_h = true
+			$BoxOpen.flip_h = true
+		elif direction > 0:
+			$BasicAnim.flip_h = false
+			$AttackAnim.flip_h = false
+			$BoxOpen.flip_h = false
+		$BasicAnim.play(\"Run\")
+		velocity.x = direction * SPEED
+	else:
+		$BasicAnim.play(\"Idle\")
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+
+	move_and_slide()
+"
+
+[node name="The Spartan Rage" type="Node2D" unique_id=1869871724]
+
+[node name="Camera" type="Camera2D" parent="." unique_id=2042095853]
 anchor_mode = 0
 
 [node name="Background" type="TileMapLayer" parent="." unique_id=931843802]
@@ -6095,6 +6095,7 @@ tile_map_data = PackedByteArray("AAAAABQAAAAPAC0AAAAAABUAAAAQAC4AAAABABQAAAAQAC0
 tile_set = SubResource("TileSet_lquwl")
 
 [node name="Props" type="TileMapLayer" parent="." unique_id=1639161072]
+tile_map_data = PackedByteArray("AAAEAAUAAABhACEAAAAEAAYAAABhACIAAAAEAAcAAABhACMAAAAFAAUAAABiACEAAAAFAAYAAABiACIAAAAFAAcAAABiACMAAAA=")
 tile_set = SubResource("TileSet_w48qg")
 
 [node name="Logo" type="AnimatedSprite2D" parent="." unique_id=359543398]
@@ -6113,22 +6114,22 @@ position = Vector2(353, 123)
 [node name="TorchPlace" parent="." unique_id=883698928 instance=ExtResource("3_h2yge")]
 position = Vector2(144, 187)
 
-[node name="Kratos" parent="." unique_id=2037797580 instance=ExtResource("2_0xm2m")]
-position = Vector2(17, 298)
-script = SubResource("GDScript_h2yge")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1865732491]
+[node name="OrbsBox" type="StaticBody2D" parent="." unique_id=1865732491]
 position = Vector2(158, 133.69583)
 scale = Vector2(0.06083334, 0.06083334)
 physics_material_override = SubResource("PhysicsMaterial_7mycd")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1356950498]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OrbsBox" unique_id=1356950498]
 position = Vector2(-57.53418, -19.65747)
 shape = SubResource("RectangleShape2D_7mycd")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StaticBody2D" unique_id=645577798]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OrbsBox" unique_id=645577798]
 position = Vector2(0, -159.38367)
 sprite_frames = SubResource("SpriteFrames_vivmo")
 autoplay = "default"
 frame_progress = 0.076261714
 flip_h = true
+
+[node name="Kratos" parent="." unique_id=2037797580 instance=ExtResource("2_0xm2m")]
+position = Vector2(17, 298)
+script = SubResource("GDScript_h2yge")
