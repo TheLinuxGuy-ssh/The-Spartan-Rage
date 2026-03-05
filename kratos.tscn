@@ -4,14 +4,22 @@
 [ext_resource type="Texture2D" uid="uid://dk471qhv1qhb2" path="res://characters/kratos-idle.png" id="1_vmmqh"]
 [ext_resource type="Texture2D" uid="uid://ceiluc20gpe35" path="res://assets/Character/reversed/23.png" id="2_16rml"]
 [ext_resource type="Texture2D" uid="uid://dxjro4cmpl7qu" path="res://characters/kratos-walk.png" id="2_ycyvp"]
+[ext_resource type="Texture2D" uid="uid://b6ymhwekp26ph" path="res://assets/box-open/1.png" id="3_8anoi"]
 [ext_resource type="Texture2D" uid="uid://b2as8iijcx3dn" path="res://assets/Character/reversed/22.png" id="3_v05hf"]
 [ext_resource type="Texture2D" uid="uid://ccqk8t7g5bmwh" path="res://assets/Character/reversed/21.png" id="4_7tvcu"]
+[ext_resource type="Texture2D" uid="uid://deqcvw2slflb0" path="res://assets/box-open/2.png" id="4_mmkv5"]
+[ext_resource type="Texture2D" uid="uid://wf0nnkjnkhjk" path="res://assets/box-open/3.png" id="5_cne4b"]
 [ext_resource type="Texture2D" uid="uid://ce5sj8yd7vlgg" path="res://assets/Character/reversed/20.png" id="5_j5sfi"]
 [ext_resource type="Texture2D" uid="uid://c5w2o0snebnj3" path="res://assets/Character/reversed/19.png" id="6_7hw5s"]
+[ext_resource type="Texture2D" uid="uid://c7uyonaywpfr7" path="res://assets/box-open/4.png" id="6_7jua4"]
 [ext_resource type="Texture2D" uid="uid://bk6ht1g6il0gs" path="res://assets/Character/reversed/18.png" id="7_1sah5"]
+[ext_resource type="Texture2D" uid="uid://cdc81qu7u6g6b" path="res://assets/box-open/5.png" id="7_dwu65"]
 [ext_resource type="Texture2D" uid="uid://wm3qrjfki62j" path="res://assets/Character/reversed/17.png" id="8_3lvp4"]
+[ext_resource type="Texture2D" uid="uid://dd7itq1sv0aj0" path="res://assets/box-open/6.png" id="8_85d0a"]
+[ext_resource type="Texture2D" uid="uid://cqn10hd6xtj47" path="res://assets/box-open/7.png" id="9_7jpk0"]
 [ext_resource type="Texture2D" uid="uid://d4nuh1rnq25ki" path="res://assets/Character/reversed/16.png" id="9_r8e36"]
 [ext_resource type="Texture2D" uid="uid://bsihddtq4id7q" path="res://assets/Character/reversed/15.png" id="10_bqdng"]
+[ext_resource type="Texture2D" uid="uid://ff4qtksinj3r" path="res://assets/box-open/8.png" id="10_jdjpn"]
 [ext_resource type="Texture2D" uid="uid://cvyty2l2w7fa8" path="res://assets/Character/reversed/14.png" id="11_cres1"]
 [ext_resource type="Texture2D" uid="uid://dpql1kwtirji2" path="res://assets/Character/reversed/13.png" id="12_pql6j"]
 [ext_resource type="Texture2D" uid="uid://bc8fg8rjjh7wb" path="res://assets/Character/reversed/12.png" id="13_tejjr"]
@@ -231,6 +239,38 @@ animations = [{
 "texture": ExtResource("24_jc056")
 }],
 "loop": false,
+"name": &"Attack",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lvnha"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_8anoi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_mmkv5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_cne4b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_7jua4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_dwu65")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_85d0a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_7jpk0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_jdjpn")
+}],
+"loop": false,
 "name": &"default",
 "speed": 5.0
 }]
@@ -238,7 +278,7 @@ animations = [{
 [node name="Kratos" type="CharacterBody2D" unique_id=2037797580]
 position = Vector2(5, 1)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=354395380]
+[node name="Basic" type="AnimatedSprite2D" parent="." unique_id=354395380]
 position = Vector2(20.878414, 0.12159252)
 scale = Vector2(0.30173695, 0.30173698)
 sprite_frames = SubResource("SpriteFrames_vmmqh")
@@ -256,6 +296,15 @@ visible = false
 position = Vector2(49, -14.000001)
 scale = Vector2(0.21677083, 0.19677082)
 sprite_frames = SubResource("SpriteFrames_gfkn2")
+animation = &"Attack"
 frame = 23
 frame_progress = 1.0
 speed_scale = 2.0
+
+[node name="BoxOpen" type="AnimatedSprite2D" parent="." unique_id=1915740349]
+visible = false
+position = Vector2(16, -5.9604645e-08)
+scale = Vector2(0.0765, 0.0765)
+sprite_frames = SubResource("SpriteFrames_lvnha")
+frame = 7
+frame_progress = 1.0
