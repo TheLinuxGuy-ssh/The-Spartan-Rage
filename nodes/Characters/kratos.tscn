@@ -160,8 +160,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ycyvp"]
-radius = 15.033297
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3u1e8"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gfkn2"]
 animations = [{
@@ -284,12 +283,11 @@ scale = Vector2(0.30173695, 0.30173698)
 sprite_frames = SubResource("SpriteFrames_vmmqh")
 animation = &"Idle"
 autoplay = "Idle"
-frame_progress = 0.60193473
-speed_scale = 1.5
+speed_scale = 1.75
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=605048166]
-position = Vector2(13, 6)
-shape = SubResource("CircleShape2D_ycyvp")
+position = Vector2(14, 5)
+shape = SubResource("CapsuleShape2D_3u1e8")
 
 [node name="AttackAnim" type="AnimatedSprite2D" parent="." unique_id=1249285246]
 visible = false
