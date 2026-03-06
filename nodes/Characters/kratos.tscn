@@ -35,6 +35,80 @@
 [ext_resource type="Texture2D" uid="uid://cuxv64skh2vil" path="res://assets/characters/lightattack/2.png" id="23_qftq8"]
 [ext_resource type="Texture2D" uid="uid://dotpyyigsexer" path="res://assets/characters/lightattack/1.png" id="24_jc056"]
 
+[sub_resource type="GDScript" id="GDScript_3u1e8"]
+script/source = "extends CharacterBody2D
+
+const speed  = 150.0
+const attackSpeed = 20.0
+const jumpVelocity = -400.0
+
+var activeSpeed = 150.0
+var activeJumpVelocity = -400.0
+var nearObject = \"\"
+
+signal box_animation_started
+signal entered_area
+
+func character_entered_area(area: Area2D):
+	entered_area.emit(area)
+	nearObject = area.name
+			
+func character_exited_area(area: Area2D) -> void:
+	nearObject = \"\"
+
+func box_animation():
+	$BasicAnim.visible = false
+	$AttackAnim.visible = false
+	$BoxOpen.visible = true
+	$BoxOpen.play()
+	box_animation_started.emit()
+	await get_tree().create_timer(1.6).timeout
+	$BasicAnim.visible = true
+	$BoxOpen.visible = false
+	activeSpeed = speed
+
+func _physics_process(delta: float) -> void:
+	# Add the gravity.
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+	# Handle jump.
+	if Input.is_action_just_pressed(\"move_up\") and is_on_floor():
+		velocity.y = jumpVelocity
+	if Input.is_action_pressed(\"attack\") and is_on_floor():
+		$BasicAnim.visible = false
+		$AttackAnim.visible = true
+		$AttackAnim.play()
+		activeSpeed = attackSpeed
+		activeJumpVelocity = 0
+		await get_tree().create_timer(2.4).timeout
+		$BasicAnim.visible = true
+		$AttackAnim.visible = false
+		activeSpeed = speed
+	if Input.is_action_pressed(\"interact\") and is_on_floor():
+		if nearObject == \"BoxArea\":
+			box_animation()
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var direction := Input.get_axis(\"move_left\", \"move_right\")
+	if direction:
+		if direction < 0:
+			$BasicAnim.flip_h = true
+			$AttackAnim.flip_h = true
+			$BoxOpen.flip_h = true
+		elif direction > 0:
+			$BasicAnim.flip_h = false
+			$AttackAnim.flip_h = false
+			$BoxOpen.flip_h = false
+		$BasicAnim.play(\"Run\")
+		velocity.x = direction * activeSpeed
+	else:
+		$BasicAnim.play(\"Idle\")
+		velocity.x = move_toward(velocity.x, 0, activeSpeed)
+
+	move_and_slide()
+"
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_h2yge"]
 atlas = ExtResource("1_vmmqh")
 region = Rect2(0, 0, 140, 140)
@@ -276,6 +350,7 @@ animations = [{
 
 [node name="Kratos" type="CharacterBody2D" unique_id=2037797580]
 position = Vector2(5, 1)
+script = SubResource("GDScript_3u1e8")
 
 [node name="BasicAnim" type="AnimatedSprite2D" parent="." unique_id=354395380]
 position = Vector2(20.878414, 0.12159252)
@@ -285,8 +360,14 @@ animation = &"Idle"
 autoplay = "Idle"
 speed_scale = 1.75
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=605048166]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1920814592]
 position = Vector2(14, 5)
+shape = SubResource("CapsuleShape2D_3u1e8")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1138415524]
+position = Vector2(14, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=605048166]
 shape = SubResource("CapsuleShape2D_3u1e8")
 
 [node name="AttackAnim" type="AnimatedSprite2D" parent="." unique_id=1249285246]
@@ -306,3 +387,6 @@ scale = Vector2(0.0765, 0.0765)
 sprite_frames = SubResource("SpriteFrames_lvnha")
 frame = 7
 frame_progress = 1.0
+
+[connection signal="area_entered" from="Area2D" to="." method="character_entered_area"]
+[connection signal="area_exited" from="Area2D" to="." method="character_exited_area"]

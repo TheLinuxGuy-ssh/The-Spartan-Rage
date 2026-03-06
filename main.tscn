@@ -10818,6 +10818,30 @@ animations = [{
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7mycd"]
 
+[sub_resource type="GDScript" id="GDScript_oosfy"]
+script/source = "extends StaticBody2D
+
+var opened = false
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_kratos_box_animation_started() -> void:
+	if !opened:
+		await get_tree().create_timer(0.8).timeout
+		$AnimatedSprite2D.play(\"Open\")
+		opened = true
+
+	
+"
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_vivmo"]
 animations = [{
 "frames": [{
@@ -10855,69 +10879,8 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
 size = Vector2(312.33173, 345.20547)
 
-[sub_resource type="GDScript" id="GDScript_h2yge"]
-script/source = "extends CharacterBody2D
-
-
-var SPEED  = 150.0
-const JUMP_VELOCITY = -400.0
-
-
-func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-
-	# Handle jump.
-	if Input.is_action_just_pressed(\"move_up\") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-	if Input.is_action_pressed(\"attack\") and is_on_floor():
-		$BasicAnim.visible = false
-		$AttackAnim.visible = true
-		$AttackAnim.play()
-		SPEED = 20.0
-		await get_tree().create_timer(2.4).timeout
-		$BasicAnim.visible = true
-		$AttackAnim.visible = false
-		SPEED = 150.0
-	if Input.is_action_pressed(\"interact\") and is_on_floor():
-		$BasicAnim.visible = false
-		$BoxOpen.visible = true
-		$BoxOpen.play()
-		SPEED = 0.0
-		await get_tree().create_timer(1.6).timeout
-		$BasicAnim.visible = true
-		$BoxOpen.visible = false
-		SPEED = 150.0
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis(\"move_left\", \"move_right\")
-	if direction:
-		if direction < 0:
-			$BasicAnim.flip_h = true
-			$AttackAnim.flip_h = true
-			$BoxOpen.flip_h = true
-		elif direction > 0:
-			$BasicAnim.flip_h = false
-			$AttackAnim.flip_h = false
-			$BoxOpen.flip_h = false
-		$BasicAnim.play(\"Run\")
-		velocity.x = direction * SPEED
-	else:
-		$BasicAnim.play(\"Idle\")
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-
-	move_and_slide()
-	
-func start_box_animation():
-	$BasicAnim.visible = false
-	$AttackAnim.visible = false
-	$BoxOpen.visible = true
-	$BoxOpen.play()
-	await get_tree().create_timer(1.6).timeout
-	$BasicAnim.visible = true
-	$BoxOpen.visible = false
-"
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oosfy"]
+size = Vector2(371.64355, 322.3291)
 
 [sub_resource type="GDScript" id="GDScript_bmvma"]
 script/source = "extends Camera2D
@@ -10977,15 +10940,23 @@ frame_progress = 0.3864454
 position = Vector2(583, 188.99998)
 scale = Vector2(0.06083334, 0.06083334)
 physics_material_override = SubResource("PhysicsMaterial_7mycd")
+script = SubResource("GDScript_oosfy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OrbsBox" unique_id=645577798]
 position = Vector2(-279.45166, -16.438477)
 sprite_frames = SubResource("SpriteFrames_vivmo")
+animation = &"Open"
 autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OrbsBox" unique_id=1356950498]
 position = Vector2(-279.45187, 131.5069)
 shape = SubResource("RectangleShape2D_7mycd")
+
+[node name="BoxArea" type="Area2D" parent="OrbsBox" unique_id=1066437417]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OrbsBox/BoxArea" unique_id=467179203]
+position = Vector2(-378.08206, 147.94539)
+shape = SubResource("RectangleShape2D_oosfy")
 
 [node name="TorchPlace4" parent="." unique_id=877378516 instance=ExtResource("3_h2yge")]
 position = Vector2(788, 202)
@@ -11001,7 +10972,6 @@ position = Vector2(244, 234)
 
 [node name="Kratos" parent="." unique_id=2037797580 instance=ExtResource("2_0xm2m")]
 position = Vector2(236, 314)
-script = SubResource("GDScript_h2yge")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1273133867]
 
