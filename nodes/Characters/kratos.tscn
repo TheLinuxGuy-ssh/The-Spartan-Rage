@@ -45,9 +45,11 @@ const jumpVelocity = -400.0
 var activeSpeed = 150.0
 var activeJumpVelocity = -400.0
 var nearObject = \"\"
+var health = 100
 
 signal box_animation_started
 signal entered_area
+signal hurt
 
 func character_entered_area(area: Area2D):
 	entered_area.emit(area)
@@ -55,6 +57,14 @@ func character_entered_area(area: Area2D):
 			
 func character_exited_area(area: Area2D) -> void:
 	nearObject = \"\"
+	
+func took_hit():
+	health-=20
+	hurt.emit(health)
+	if health == 0:
+		print(\"Game Over\")
+		get_tree().paused = true
+	
 
 func box_animation():
 	$BasicAnim.visible = false
@@ -75,7 +85,8 @@ func _physics_process(delta: float) -> void:
 	# Handle jump.
 	if Input.is_action_just_pressed(\"move_up\") and is_on_floor():
 		velocity.y = jumpVelocity
-	if Input.is_action_pressed(\"attack\") and is_on_floor():
+	if Input.is_action_just_pressed(\"attack\") and is_on_floor():
+		took_hit()
 		$BasicAnim.visible = false
 		$AttackAnim.visible = true
 		$AttackAnim.play()
@@ -88,8 +99,6 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed(\"interact\") and is_on_floor():
 		if nearObject == \"BoxArea\":
 			box_animation()
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis(\"move_left\", \"move_right\")
 	if direction:
 		if direction < 0:
